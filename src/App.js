@@ -9,7 +9,7 @@ import { getTokenFromResponse } from "./spotify/spotify";
 const spotify = new SpotifyWebApi();
 
 function App() {
-  const [{user,token}, dispatch] = useStateValue();
+  const [{token}, dispatch] = useStateValue();
 
   useEffect(()=>{
     //getting the token from url
@@ -19,12 +19,25 @@ function App() {
     let _token=hash.access_token;
     if(_token){
 
+      spotify.setAccessToken(_token); //setting up personal token
+
       dispatch({
         type: "SET_TOKEN",
         token: _token,
       });
 
-      spotify.setAccessToken(_token); //setting up personal token
+      spotify.getMyTopArtists().then((response) =>
+      dispatch({
+        type: "SET_TOP_ARTISTS",
+        top_artists: response,
+      })
+    );
+
+      dispatch({
+        type: "SET_SPOTIFY",
+        spotify: spotify,
+      });
+
 
       //updating user state using contextapi
       spotify.getMe()
@@ -51,9 +64,8 @@ function App() {
         });
       });
     }
-  },[]);
+  },[token,dispatch]);
 
-  console.log(token)
 
   return (
     <div className="App">

@@ -12,11 +12,31 @@ export const initialState = {
 const reducer = (state, action) => {
     console.log(action);  
     switch (action.type) {
-        case "SET_USER":
+      case "SET_USER":
+        return {
+          ...state,
+          user: action.user,
+      };
+        case "SET_PLAYING":
           return {
             ...state,
-            user: action.user,
+            playing: action.playing,
           };
+          case "SET_ITEM":
+            return {
+              ...state,
+              item: action.item,
+            };
+            case "SET_TOP_ARTISTS":
+              return {
+                ...state,
+                top_artists: action.top_artists,
+              };
+        case "SET_SPOTIFY":
+          return {
+            ...state,
+            spotify: action.spotify,
+        };
         case "SET_TOKEN":
           return {
             ...state,
